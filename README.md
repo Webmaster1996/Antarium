@@ -1,6 +1,11 @@
 # Antarium
 Jeu spatial créer pour vous le plus stable du moment
 
+# En cours actuellement
+```
+Création de toute la partie autoloading avec suppresion de tout les requiere, ainsi que les test de toute les pages du jeu
+```
+
 # Description
 **Antarium** est la fusion de **Antaris** créer par **Thomas créateur original** et de **xterium** créer par **Xterium.ru** tout sera réaliser en **php 7.0** donc codé en **PDO** car Mysql n'existe plus dans cette version de php comme annoncer. Tout le code est propre des changements mageur serons fais pour vous donnée un jeu **100% stable** des le **début**.
 Jeu codé de la base de **2moons PDO** mais avec **pas mal de changement** fais pour vous donnée un **code propre et refactoriser**.
