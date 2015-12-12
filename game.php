@@ -1,37 +1,24 @@
 <?php
 
 /**
- *  2Moons
- *  Copyright (C) 2012 Jan Kröpke
+ * Projet : Antarium
+ * Copyright (C) 2015 Danter14
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Ce projet est totalement en open source il peux donc être
+ * modifier et redistribuer gratuitement.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @package 2Moons
- * @author Jan Kröpke <info@2moons.cc>
- * @copyright 2012 Jan Kröpke <info@2moons.cc>
- * @license http://www.gnu.org/licenses/gpl.html GNU GPLv3 License
- * @version 1.7.2 (2013-03-18)
- * @info $Id$
- * @link http://2moons.cc/
+ * @package Antarium
+ * @author Danter14
+ * @copyright 2015 Danter14
+ * @license GNU GENERAL PUBLIC LICENSE
+ * @version 1.0 (12/12/2015)
+ * @info Fichier: game.php
  */
 
 define('MODE', 'INGAME');
 define('ROOT_PATH', str_replace('\\', '/',dirname(__FILE__)).'/');
 set_include_path(ROOT_PATH);
 
-require 'includes/pages/game/AbstractGamePage.class.php';
-require 'includes/pages/game/ShowErrorPage.class.php';
 require 'includes/common.php';
 /** @var $LNG Language */
 
@@ -39,15 +26,6 @@ $page 		= HTTP::_GP('page', 'overview');
 $mode 		= HTTP::_GP('mode', 'show');
 $page		= str_replace(array('_', '\\', '/', '.', "\0"), '', $page);
 $pageClass	= 'Show'.ucwords($page).'Page';
-
-$path		= 'includes/pages/game/'.$pageClass.'.class.php';
-
-if(!file_exists($path)) {
-	ShowErrorPage::printError($LNG['page_doesnt_exist']);
-}
-
-// Added Autoload in feature Versions
-require $path;
 
 $pageObj	= new $pageClass;
 // PHP 5.2 FIX

@@ -1,33 +1,35 @@
 <?php
 
 /**
- *  2Moons
- *  Copyright (C) 2012 Jan Kröpke
+ * Projet : Antarium
+ * Copyright (C) 2015 Danter14
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Ce projet est totalement en open source il peux donc être
+ * modifier et redistribuer gratuitement.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @package 2Moons
- * @author Jan Kröpke <info@2moons.cc>
- * @copyright 2012 Jan Kröpke <info@2moons.cc>
- * @license http://www.gnu.org/licenses/gpl.html GNU GPLv3 License
- * @version 1.7.2 (2013-03-18)
- * @info $Id$
- * @link http://2moons.cc/
+ * @package Antarium
+ * @author Danter14
+ * @copyright 2015 Danter14
+ * @license GNU GENERAL PUBLIC LICENSE
+ * @version 1.0 (10/12/2015)
+ * @info Fichier: common.php
  */
+
+/**
+ * On appel notre autauloder pour charger nos classes
+ */
+require 'includes/classes/Autoloader.class.php';
+Autoloader::applicationAutoload();
 
 if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS'])) {
 	exit('You cannot set the GLOBALS-array from outside the script.');
+}
+
+/**
+ * Blocage du système si la version php est inférieur à 5.4
+ */
+if (PHP_VERSION < 5.4) {
+	ShowErrorPage::printError("Hihi vous avez la version PHP : " . PHP_VERSION . ", merci de mettre à jours votre hébergeur.");
 }
 
 // Magic Quotes work around.
@@ -57,7 +59,7 @@ ini_set('display_errors', 1);
 header('Content-Type: text/html; charset=UTF-8');
 define('TIMESTAMP',	time());
 	
-require 'includes/constants.php' ;
+require 'includes/constants.php';
 
 ini_set('log_errors', 'On');
 ini_set('error_log', 'includes/error.log');
@@ -66,19 +68,7 @@ require 'includes/GeneralFunctions.php';
 set_exception_handler('exceptionHandler');
 set_error_handler('errorHandler');
 
-require 'includes/classes/ArrayUtil.class.php';
-require 'includes/classes/Cache.class.php';
-require 'includes/classes/Database.class.php';
-require 'includes/classes/Config.class.php';
-require 'includes/classes/class.FleetFunctions.php';
-require 'includes/classes/HTTP.class.php';
-require 'includes/classes/Language.class.php';
-require 'includes/classes/PlayerUtil.class.php';
-require 'includes/classes/Session.class.php';
-require 'includes/classes/Universe.class.php';
-
-require 'includes/classes/class.theme.php';
-require 'includes/classes/class.template.php';
+require 'includes/classes/class.Template.php';
 
 // Say Browsers to Allow ThirdParty Cookies (Thanks to morktadela)
 HTTP::sendHeader('P3P', 'CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
@@ -98,7 +88,7 @@ if(!file_exists('includes/config.php')) {
 if(defined('DATABASE_VERSION') && DATABASE_VERSION === 'OLD')
 {
 	/* For our old Admin panel */
-	require 'includes/classes/Database_BC.class.php';
+	// require 'includes/classes/Database_BC.class.php';
 	$DATABASE	= new Database_BC();
 	
 	$dbTableNames	= Database::get()->getDbTableNames();
@@ -123,6 +113,11 @@ if (MODE === 'INGAME' || MODE === 'ADMIN')
 	{
 		HTTP::redirectTo('index.php?code=3');
 	}
+
+	/**
+	 * On appel notre autoloder pour charger nos classes login
+	 */
+	Autoloader::applicationAutoloadJeux();
 
 	require 'includes/classes/class.BuildFunctions.php';
 	require 'includes/classes/class.PlanetRessUpdate.php';
@@ -211,4 +206,9 @@ elseif(MODE === 'LOGIN')
 	$LNG	= new Language();
 	$LNG->getUserAgentLanguage();
 	$LNG->includeData(array('L18N', 'INGAME', 'PUBLIC', 'CUSTOM'));
+
+	/**
+	 * On appel notre autoloder pour charger nos classes login
+	 */
+	Autoloader::applicationAutoloadConnect();
 }
