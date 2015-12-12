@@ -3,7 +3,8 @@ Jeu spatial créer pour vous le plus stable du moment
 
 # En cours actuellement
 ```
-Création de toute la partie autoloading avec suppresion de tout les requiere, ainsi que les test de toute les pages du jeu
+Création de toute la partie autoloading avec suppresion de tout les requiere,
+ainsi que les test de toute les pages du jeu.
 ```
 
 # Description
