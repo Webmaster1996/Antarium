@@ -3,13 +3,14 @@ Jeu spatial créer pour vous le plus stable du moment
 
 # En cours actuellement
 ```
-Création de la nouvelle structure pour les vues et la partie design.
+Création du nouveau design en responsive ainsi que la suppression de tout les fichier et image non utiliser.
+Struture posé est bien plus propre mis en place.
 ```
 
 # Stable
 ```
 Le jeu actuel n'est pas stable car il reste beaucoups de travail à faire dessus.
-Jeux à 5% de sont développement.
+Jeux à 8% de sont développement.
 ```
 
 # Version Actuel
