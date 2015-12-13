@@ -89,8 +89,8 @@
 		{/foreach}
         });
 		</script>
-        <script src="scripts/game/topnav.js"></script>
-        {if $hasGate}<script src="scripts/game/gate.js"></script>{/if}
+        <script src="{$dpath}/js/game/topnav.js"></script>
+        {if $hasGate}<script src="{$dpath}/js/game/gate.js"></script>{/if}
 		{/if}
 	</div>
 	{if $closed}

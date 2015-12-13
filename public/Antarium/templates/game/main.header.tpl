@@ -7,22 +7,16 @@
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="{$lang}" class="no-js"> <!--<![endif]-->
 <head>
 	<title>{block name="title"} - {$uni_name} - {$game_name}{/block}</title>
-	<meta name="generator" content="2Moons {$VERSION}">
-	<!-- 
-		This website is powered by 2Moons {$VERSION}
-		2Moons is a free Space Browsergame initially created by Jan Kröpke and licensed under GNU/GPL.
-		2Moons is copyright 2009-2013 of Jan Kröpke. Extensions are copyright of their respective owners.
-		Information and contribution at http://2moons.cc/
-	-->
+	<meta name="generator" content="Antarium {$VERSION}">
 	{if !empty($goto)}
 	<meta http-equiv="refresh" content="{$gotoinsec};URL={$goto}">
 	{/if}
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" type="text/css" href="./styles/resource/css/base/boilerplate.css?v={$REV}">
-	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/main.css?v={$REV}">
-	<link rel="stylesheet" type="text/css" href="./styles/resource/css/base/jquery.css?v={$REV}">
-	<link rel="stylesheet" type="text/css" href="./styles/resource/css/base/jquery.fancybox.css?v={$REV}">
-	<link rel="stylesheet" type="text/css" href="./styles/resource/css/base/validationEngine.jquery.css?v={$REV}">
+	<link rel="stylesheet" type="text/css" href="{$dpath}/css/base/boilerplate.css?v={$REV}">
+	<link rel="stylesheet" type="text/css" href="{$dpath}/css/ingame/main.css?v={$REV}">
+	<link rel="stylesheet" type="text/css" href="{$dpath}/css/base/jquery.css?v={$REV}">
+	<link rel="stylesheet" type="text/css" href="{$dpath}/css/base/jquery.fancybox.css?v={$REV}">
+	<link rel="stylesheet" type="text/css" href="{$dpath}/css/base/validationEngine.jquery.css?v={$REV}">
 	<link rel="stylesheet" type="text/css" href="{$dpath}formate.css?v={$REV}">
 	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
 	<script type="text/javascript">
@@ -47,16 +41,16 @@
 		serverTime.setSeconds(serverTime.getSeconds()+1);
 	}, 1000);
 	</script>
-	<script type="text/javascript" src="./scripts/base/jquery.js?v={$REV}"></script>
-	<script type="text/javascript" src="./scripts/base/jquery.ui.js?v={$REV}"></script>
-	<script type="text/javascript" src="./scripts/base/jquery.cookie.js?v={$REV}"></script>
-	<script type="text/javascript" src="./scripts/base/jquery.fancybox.js?v={$REV}"></script>
-	<script type="text/javascript" src="./scripts/base/jquery.validationEngine.js?v={$REV}"></script>
-	<script type="text/javascript" src="./scripts/l18n/validationEngine/jquery.validationEngine-{$lang}.js?v={$REV}"></script>
-	<script type="text/javascript" src="./scripts/base/tooltip.js?v={$REV}"></script>
-	<script type="text/javascript" src="./scripts/game/base.js?v={$REV}"></script>
+	<script type="text/javascript" src="{$dpath}/js/base/jquery.js?v={$REV}"></script>
+	<script type="text/javascript" src="{$dpath}/js/base/jquery.ui.js?v={$REV}"></script>
+	<script type="text/javascript" src="{$dpath}/js/base/jquery.cookie.js?v={$REV}"></script>
+	<script type="text/javascript" src="{$dpath}/js/base/jquery.fancybox.js?v={$REV}"></script>
+	<script type="text/javascript" src="{$dpath}/js/base/jquery.validationEngine.js?v={$REV}"></script>
+	<script type="text/javascript" src="{$dpath}/js/l18n/validationEngine/jquery.validationEngine-{$lang}.js?v={$REV}"></script>
+	<script type="text/javascript" src="{$dpath}/js/base/tooltip.js?v={$REV}"></script>
+	<script type="text/javascript" src="{$dpath}/js/game/base.js?v={$REV}"></script>
 	{foreach item=scriptname from=$scripts}
-	<script type="text/javascript" src="./scripts/game/{$scriptname}.js?v={$REV}"></script>
+	<script type="text/javascript" src="{$dpath}/js/game/{$scriptname}.js?v={$REV}"></script>
 	{/foreach}
 	{block name="script"}{/block}
 	<script type="text/javascript">
