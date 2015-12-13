@@ -25,13 +25,6 @@ if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS'])) {
 	exit('You cannot set the GLOBALS-array from outside the script.');
 }
 
-/**
- * Blocage du système si la version php est inférieur à 5.4
- */
-if (PHP_VERSION < 5.4) {
-	ShowErrorPage::printError("Hihi vous avez la version PHP : " . PHP_VERSION . ", merci de mettre à jours votre hébergeur.");
-}
-
 // Magic Quotes work around.
 // http://www.php.net/manual/de/security.magicquotes.disabling.php#91585
 if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc() == 1) {
@@ -76,6 +69,13 @@ define('AJAX_REQUEST', HTTP::_GP('ajax', 0));
 
 $THEME		= new Theme();
 
+/**
+ * Blocage du système si la version php est inférieur à 5.6
+ */
+if (PHP_VERSION < 5.4) {
+	HTTP::redirectTo('Documentation/index.php');
+}
+
 if (MODE === 'INSTALL')
 {
 	return;
@@ -88,7 +88,6 @@ if(!file_exists('includes/config.php')) {
 if(defined('DATABASE_VERSION') && DATABASE_VERSION === 'OLD')
 {
 	/* For our old Admin panel */
-	// require 'includes/classes/Database_BC.class.php';
 	$DATABASE	= new Database_BC();
 	
 	$dbTableNames	= Database::get()->getDbTableNames();

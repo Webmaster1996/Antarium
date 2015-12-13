@@ -1,29 +1,18 @@
 <?php
 
 /**
- *  2Moons
- *  Copyright (C) 2012 Jan Kröpke
+ * Projet : Antarium
+ * Copyright (C) 2015 Danter14
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Ce projet est totalement en open source il peux donc être
+ * modifier et redistribuer gratuitement.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @package 2Moons
- * @author Jan Kröpke <info@2moons.cc>
- * @copyright 2012 Jan Kröpke <info@2moons.cc>
- * @license http://www.gnu.org/licenses/gpl.html GNU GPLv3 License
- * @version 1.7.2 (2013-03-18)
- * @info $Id$
- * @link http://2moons.cc/
+ * @package Antarium
+ * @author Danter14
+ * @copyright 2015 Danter14
+ * @license GNU GENERAL PUBLIC LICENSE
+ * @version 1.0 (12/12/2015)
+ * @info Fichier: class.Theme.php
  */
  
 class Theme
@@ -39,12 +28,12 @@ class Theme
 	}
 	
 	function isHome() {
-		$this->template		= ROOT_PATH.'styles/home/';
+		$this->template		= ROOT_PATH.'public/home/';
 		$this->customtpls	= array();
 	}
 	
 	function setUserTheme($Theme) {
-		if(!file_exists(ROOT_PATH.'styles/theme/'.$Theme.'/style.cfg'))
+		if(!file_exists(ROOT_PATH.'public/'.$Theme.'/configTheme/style.cfg'))
 			return false;
 			
 		$this->skin		= $Theme;
@@ -53,7 +42,7 @@ class Theme
 	}
 		
 	function getTheme() {
-		return './styles/theme/'.$this->skin.'/';
+		return './public/'.$this->skin.'/';
 	}
 	
 	function getThemeName() {
@@ -61,7 +50,7 @@ class Theme
 	}
 	
 	function getTemplatePath() {
-		return ROOT_PATH.'/styles/templates/'.$this->skin.'/';
+		return ROOT_PATH.'/public/'.$this->skin.'/templates/';
 	}
 		
 	function isCustomTPL($tpl) {
@@ -72,14 +61,14 @@ class Theme
 	}
 	
 	function parseStyleCFG() {
-		require(ROOT_PATH.'styles/theme/'.$this->skin.'/style.cfg');
+		require(ROOT_PATH.'public/'.$this->skin.'/configTheme/style.cfg');
 		$this->skininfo		= $Skin;
 		$this->customtpls	= (array) $Skin['templates'];	
 	}
 	
 	function setStyleSettings() {
-		if(file_exists(ROOT_PATH.'styles/theme/'.$this->skin.'/settings.cfg')) {
-			require(ROOT_PATH.'styles/theme/'.$this->skin.'/settings.cfg');
+		if(file_exists(ROOT_PATH.'public/'.$this->skin.'/configTheme/settings.cfg')) {
+			require(ROOT_PATH.'public/'.$this->skin.'/configTheme/settings.cfg');
 		}
 		
 		$this->THEMESETTINGS	= array_merge(array(
@@ -102,13 +91,13 @@ class Theme
 			{
 				self::$Themes	= unserialize(file_get_contents(ROOT_PATH.'cache/cache.themes.php'));
 			} else {
-				$Skins	= array_diff(scandir(ROOT_PATH.'styles/theme/'), array('..', '.', '.svn', '.htaccess', 'index.htm'));
+				$Skins	= array_diff(scandir(ROOT_PATH.'public/'), array('..', '.', '.svn', '.htaccess', 'index.htm'));
 				$Themes	= array();
 				foreach($Skins as $Theme) {
-					if(!file_exists(ROOT_PATH.'styles/theme/'.$Theme.'/style.cfg'))
+					if(!file_exists(ROOT_PATH.'public/'.$Theme.'/configTheme/style.cfg'))
 						continue;
 						
-					require(ROOT_PATH.'styles/theme/'.$Theme.'/style.cfg');
+					require(ROOT_PATH.'public/'.$Theme.'/configTheme/style.cfg');
 					$Themes[$Theme]	= $Skin['name'];
 				}
 				file_put_contents(ROOT_PATH.'cache/cache.themes.php', serialize($Themes));

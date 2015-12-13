@@ -42,7 +42,7 @@ $template = new template();
 $template->assign(array(
    'lang'       => $LNG->getLanguage(),
    'Selector'   => $LNG->getAllowedLangs(false),
-   'title'      => $LNG['title_install'] . ' &bull; 2Moons',
+   'title'      => $LNG['title_install'] . ' &bull; Antarium',
    'header'     => $LNG['menu_install'],
    'canUpgrade' => file_exists('includes/config.php') && filesize('includes/config.php') !== 0
 ));
@@ -100,149 +100,6 @@ switch ($mode) {
 		$ftp->chmod('cache', $CHMOD);
 		$ftp->chmod('includes', $CHMOD);
 		$ftp->chmod('install', $CHMOD);
-		break;
-	case 'upgrade':
-		// Willkommen zum Update page. Anzeige, von und zu geupdatet wird. Informationen, dass ein backup erstellt wird.
-		require_once('includes/config.php');
-
-		try {
-			$sqlRevision = Config::get()->sql_revision;
-		}
-		catch (Exception $e) {
-			$template->message($LNG['upgrade_required_rev'], false, 0, true);
-			exit;
-		}
-
-		$fileList = array();
-
-		$directoryIterator = new DirectoryIterator(ROOT_PATH . 'install/updates/');
-		/** @var $fileInfo DirectoryIterator */
-		foreach ($directoryIterator as $fileInfo) {
-			if (!$fileInfo->isFile()) {
-				continue;
-			}
-			$fileRevision = substr($fileInfo->getFilename(), 7, -4);
-			if ($fileRevision > $sqlRevision) {
-				$fileList[] = (int)$fileRevision;
-			}
-		}
-		sort($fileList);
-		$template->assign_vars(array(
-			'revisionlist'  => $fileList,
-			'file_revision' => empty($fileList) ? $sqlRevision : max($fileList),
-			'sql_revision'  => $sqlRevision,
-			'header'        => $LNG['menu_upgrade']
-		));
-		$template->show('ins_update.tpl');
-		break;
-	case 'doupgrade':
-		// TODO:Need a rewrite!
-		require 'includes/config.php';
-		$startRevision       = HTTP::_GP('startrevision', 0);
-
-		// Create a Backup
-		$prefixCounts = strlen(DB_PREFIX);
-		$dbTables     = array();
-		$sqlTableRaw  = Database::get()->nativeQuery("SHOW TABLE STATUS FROM `" . DB_NAME . "`;");
-		foreach($sqlTableRaw as $table)
-		{
-			if (DB_PREFIX == substr($table['Name'], 0, $prefixCounts)) {
-				$dbTables[] = $table['Name'];
-			}
-		}
-
-		if (empty($dbTables))
-		{
-			throw new Exception('No tables found for dump.');
-		}
-
-		$fileName = '2MoonsBackup_' . date('d_m_Y_H_i_s', TIMESTAMP) . '.sql';
-		$filePath = 'includes/backups/' . $fileName;
-		require 'includes/classes/SQLDumper.class.php';
-		$dump = new SQLDumper;
-		$dump->dumpTablesToFile($dbTables, $filePath);
-		@set_time_limit(600);
-		$httpRoot = PROTOCOL . HTTP_HOST . str_replace(array('\\', '//'), '/', dirname(dirname($_SERVER['SCRIPT_NAME'])) . '/');
-		$revision = $startRevision - 1;
-		$fileList = array();
-		$directoryIterator = new DirectoryIterator(ROOT_PATH . 'install/updates/');
-		/** @var $fileInfo DirectoryIterator */
-		foreach ($directoryIterator as $fileInfo) {
-			if (!$fileInfo->isFile()) {
-				continue;
-			}
-			$fileRevision = substr($fileInfo->getFilename(), 7, -4);
-			if ($fileRevision > $revision) {
-				$fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
-				$key           = $fileRevision . ((int)$fileExtension === 'php');
-				$fileList[$key] = array(
-					'fileName'      => $fileInfo->getFilename(),
-					'fileRevision'  => $fileRevision,
-					'fileExtension' => $fileExtension
-				);
-			}
-		}
-		ksort($fileList);
-		if (!empty($fileList) && !empty($revision)) {
-			foreach ($fileList as $fileInfo) {
-				switch ($fileInfo['fileExtension']) {
-					case 'php':
-						copy('install/updates/' . $fileInfo['fileName'], $fileInfo['fileName']);
-						$ch = curl_init($httpRoot . $fileInfo['fileName']);
-						curl_setopt($ch, CURLOPT_HEADER, false);
-						curl_setopt($ch, CURLOPT_NOBODY, true);
-						curl_setopt($ch, CURLOPT_MUTE, true);
-						curl_exec($ch);
-						if (curl_errno($ch)) {
-							$errorMessage = 'CURL-Error on update ' . basename($fileInfo['filePath']) . ':' . curl_error($ch);
-							try {
-								$dump->restoreDatabase($filePath);
-								$message = 'Update error.<br><br>' . $errorMessage . '<br><br><b><i>Backup restored.</i></b>';
-							}
-							catch (Exception $e) {
-								$message = 'Update error.<br><br>' . $errorMessage . '<br><br><b><i>Can not restore backup. Your game is maybe broken right now.</i></b><br><br>Restore error:<br>' . $e->getMessage();
-							}
-							throw new Exception($message);
-						}
-						curl_close($ch);
-						unlink($fileInfo['fileName']);
-						break;
-					case 'sql';
-						$data = file_get_contents(ROOT_PATH . 'install/updates/' . $fileInfo['fileName']);
-						try {
-							$queries	= explode(';', str_replace("prefix_", DB_PREFIX, $data));
-							$queries	= array_filter($queries);
-							foreach($queries as $query)
-							{
-								Database::get()->nativeQuery($query);
-							}
-						}
-						catch (Exception $e) {
-							$errorMessage = $e->getMessage();
-							try {
-								$dump->restoreDatabase($filePath);
-								$message = 'Update error.<br><br>' . $errorMessage . '<br><br><b><i>Backup restored.</i></b>';
-							}
-							catch (Exception $e) {
-								$message = 'Update error.<br><br>' . $errorMessage . '<br><br><b><i>Can not restore backup. Your game is maybe broken right now.</i></b><br><br>Restore error:<br>' . $e->getMessage();
-							}
-							throw new Exception($message);
-						}
-						break;
-				}
-			}
-			$revision = end($fileList);
-			$revision = $revision['fileRevision'];
-		}
-		$gameVersion    = explode('.', Config::get(ROOT_UNI)->VERSION);
-		$gameVersion[2] = $revision;
-		Database::get()->update("UPDATE %%CONFIG%% SET VERSION = '" . implode('.', $gameVersion) . "', sql_revision = " . $revision . ";");
-		ClearCache();
-		$template->assign_vars(array(
-									'update'   => !empty($fileList),
-									'revision' => $revision,
-									'header'   => $LNG['menu_upgrade'],));
-		$template->show('ins_doupdate.tpl');
 		break;
 	case 'install':
 		$step = HTTP::_GP('step', 0);
@@ -551,9 +408,10 @@ switch ($mode) {
 		break;
 	default:
 		$template->assign(array(
-							   'intro_text'    => $LNG['intro_text'],
-							   'intro_welcome' => $LNG['intro_welcome'],
-							   'intro_install' => $LNG['intro_install'],));
+			'intro_text'    => $LNG['intro_text'],
+			'intro_welcome' => $LNG['intro_welcome'],
+			'intro_install' => $LNG['intro_install'],
+		));
 		$template->show('ins_intro.tpl');
 		break;
 }
