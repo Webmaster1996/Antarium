@@ -1,4 +1,5 @@
 ﻿<?php
+
 /**
  * Projet : Antarium
  * Copyright (C) 2015 Danter14
@@ -54,9 +55,9 @@ class Autoloader
             require "includes/pages/login/" . ucfirst($class) . ".class.php";
         }
 
-		// else if(!file_exists($class)) {
-		// 	ShowErrorPage::printError($LNG['page_doesnt_exist']);
-		// }
+		else if(!file_exists($class) && DEBUG_CLASS == false) {
+			ShowErrorPage::printError($LNG['page_doesnt_exist']);
+		}
     }
 
     public static function jeux($class)
@@ -67,9 +68,9 @@ class Autoloader
             require "includes/pages/game/" . ucfirst($class) . ".class.php";
         }
 
-		// else if(!file_exists($class)) {
-		// 	ShowErrorPage::printError($LNG['page_doesnt_exist']);
-		// }
+		else if(!file_exists($class) && DEBUG_CLASS == false) {
+			ShowErrorPage::printError($LNG['page_doesnt_exist']);
+		}
     }
 
 }
