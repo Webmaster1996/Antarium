@@ -10,7 +10,16 @@ Struture posé est bien plus propre mis en place.
 # Stable
 ```
 Le jeu actuel n'est pas stable car il reste beaucoups de travail à faire dessus.
-Jeux à 8% de sont développement.
+Jeux à 10% de sont développement.
+```
+
+# Les design
+```
+Plusieurs design vont être créer dans notre open source Antarium
+- Design Antarium qui est un design totalement unique
+- Design de Xterium
+- Design d'Antaris-lagacy
+Si vous voulez des design particulier hésité pas à me contacter par Skype ou par mail.
 ```
 
 # Version Actuel
