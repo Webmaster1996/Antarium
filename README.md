@@ -16,7 +16,7 @@ Jeux à 10% de sont développement.
 # Les design
 ```
 Plusieurs design vont être créer dans notre open source Antarium
-- Design Antarium qui est un design totalement unique
+- Design Antarium qui est un design totalement unique (Premier screen à venir)
 - Design de Xterium
 - Design d'Antaris-lagacy
 Si vous voulez des design particulier hésité pas à me contacter par Skype ou par mail.
