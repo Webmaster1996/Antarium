@@ -49,7 +49,7 @@ Si besoin allez voir la partie Documentation.
  - Jquery 1.11.2
  - POO 
  - PDO 
- - Smarty 3.1.27
+ - Smarty 3.1.29
  - Ajax
  - Json
  ```
