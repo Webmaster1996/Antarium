@@ -45,7 +45,7 @@ Si besoin allez voir la partie Documentation.
 
 # Technologie utiliser
 ```
- - PHP 5.7
+ - PHP 7.0
  - Jquery 1.11.2
  - POO 
  - PDO 
